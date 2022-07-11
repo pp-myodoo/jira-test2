@@ -1,0 +1,235 @@
+<odoo>
+
+    <record id="project_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.project.kanban.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="key"/>
+            </field>
+            <strong position="replace">
+                <strong><t t-if="record.key.value">[<field name="key"/>] </t><field name="name" string="Project Name"/></strong>
+            </strong>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_project_kanban_inherit">
+        <field name="name">project.project.kanban</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="priority" eval="0"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-esc='record.name.value']/.." position="replace">
+                <span>
+                    <t t-if="record.key.value">[<field name="key"/>] </t><t t-esc="record.name.value"/>
+                </span>
+            </xpath>
+            <a class="o_project_kanban_box" position="replace">
+                <a class="o_project_kanban_box" name="%(project.act_project_project_2_project_task_all)d" type="action">
+                    <div>
+                        <span class="o_value">
+                            <t t-esc="record.task_count.value"/>
+                        </span>
+                        <span class="o_label">
+                            <t t-esc="record.label_tasks.value"/>
+                        </span>
+                    </div>
+                </a>
+                <a t-if="record.task_count.value" name="%(project.act_project_project_2_project_task_all)d"
+                   type="action" class="o_project_kanban_box" context="{'search_default_message_needaction': 1}">
+                    <div>
+                        <span class="o_value"><t t-esc="record.task_count.value"/></span>
+                    </div>
+                </a>
+            </a>
+        </field>
+    </record>
+
+    <record id="view_project_project_filter_inherit" model="ir.ui.view">
+        <field name="name">project.project.select.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|', ('name', 'ilike', self), ('key', 'ilike', self)]</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_project_inherit" model="ir.ui.view">
+        <field name="name">project.project.tree.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="key"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="edit_project_inherit" model="ir.ui.view">
+        <field name="name">project.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <h1 position="after">
+                <h3>Key: <field name="key" class="oe_inline" attrs="{'required': [('jira_project', '=', True)]}"/></h3>
+            </h1>
+            <page position="before">
+                <page string="Description">
+                    <field name="description"/>
+                </page>
+                <page string="Stages">
+                    <field name="type_ids" readonly="1"/>
+                </page>
+            </page>
+            <field name="user_id" position="replace"/>
+            <div class="oe_title" position="after">
+                <group>
+                    <group>
+                        <field name="id" invisible="1"/>
+                        <field name="jira_project"/>
+                        <field name="user_id" required="1"/>
+                        <field name="url"/>
+                        <field name="project_type_id" options="{'no_create': 1, 'no_create_edit': 1}"
+                               attrs="{'required': [('jira_project', '=', True)], 'invisible': [('jira_project', '=', False)]}"/>
+                        <field name="project_template_id" options="{'no_create': 1, 'no_create_edit': 1}"
+                               attrs="{'required': [('jira_project', '=', True), ('id', '=', False)], 'invisible': [('jira_project', '=', False)]}"/>
+                        <field name="category_id"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <group>
+                    <field name="component_ids" widget="many2many_tags" options="{'no_create_edit': 1}"
+                           domain="[('project_id', '=', active_id)]" context="{'default_project_id': active_id}"/>
+                    <field name="issue_type_ids" widget="many2many_tags" options="{'no_create_edit': 1, 'no_open': 1}" readonly="1"/>
+                    <field name="version_ids" widget="many2many_tags" options="{'no_create_edit': 1}"
+                           domain="[('project_id', '=', active_id)]" context="{'default_project_id': active_id}"/>
+                </group>
+            </div>
+        </field>
+    </record>
+
+    <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+        <field name="priority" eval="1000"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="replace"/>
+            <xpath expr="//form/group" position="after">
+                <group>
+                    <group>
+                        <field name="name" string="Name"/>
+                        <field name="key" required="1"/>
+                        <field name="jira_project"/>
+                        <field name="project_type_id" required="1" options="{'no_create': 1, 'no_create_edit': 1, 'no_open': 1}"
+                               attrs="{'invisible': [('jira_project', '=', False)], 'required': [('jira_project', '!=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="project_template_id" required="1" options="{'no_create': 1, 'no_create_edit': 1, 'no_open': 1}"
+                               attrs="{'invisible': [('jira_project', '=', False)], 'required': [('jira_project', '!=', False)]}"/>
+                        <field name="user_id" required="1" options="{'no_create': 1, 'no_create_edit': 1, 'no_open': 1}"/>
+                        <field name="url"/>
+                        <field name="category_id" options="{'no_create': 1, 'no_create_edit': 1, 'no_open': 1}"
+                               attrs="{'invisible': [('jira_project', '=', False)]}"/>
+                        <field name="description"/>
+                    </group>
+                </group>
+            </xpath>
+            <field name="name" position="replace">
+            </field>
+        </field>
+    </record>
+
+    <record id="jira_project_version_tree" model="ir.ui.view">
+        <field name="name">jira_project_version_tree</field>
+        <field name="model">jira.project.version</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="project_id"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="jira_id"/>
+                <field name="archived"/>
+                <field name="released"/>
+                <field name="release_date"/>
+                <field name="overdue"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="jira_project_version_form" model="ir.ui.view">
+        <field name="name">jira_project_version_form</field>
+        <field name="model">jira.project.version</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="jira_id"/>
+                            <field name="archived"/>
+                            <field name="released"/>
+                            <field name="release_date"/>
+                            <field name="overdue"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="jira_project_version_action" model="ir.actions.act_window">
+        <field name="name">Jira Project Version</field>
+        <field name="res_model">jira.project.version</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="jira_issue_link_type_tree" model="ir.ui.view">
+        <field name="name">jira_issue_link_type_tree</field>
+        <field name="model">jira.issue.link.type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="inward" context="{'default_type': 'inward'}"/>
+                <field name="outward" context="{'default_type': 'outward'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="jira_issue_link_type_action" model="ir.actions.act_window">
+        <field name="name">Issue Link Type</field>
+        <field name="res_model">jira.issue.link.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="jira_issue_link_tree" model="ir.ui.view">
+        <field name="name">jira_issue_link_tree</field>
+        <field name="model">jira.issue.link</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" edit="0">
+                <field name="jira_id" invisible="1"/>
+                <field name="type_id" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                <field name="inward" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                <field name="inward_issue_id" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                <field name="outward" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                <field name="outward_issue_id" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="jira_issue_link_action" model="ir.actions.act_window">
+        <field name="name">Issue Link</field>
+        <field name="res_model">jira.issue.link</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.actions.server" id="jira_server_action">
+        <field name="name">Export To Jira</field>
+        <field name="model_id" ref="model_helpdesk_ticket"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="model_helpdesk_ticket"/>
+        <field name="binding_type">action</field>
+        <field name="code">
+            records.update_jira()
+        </field>
+    </record>
+
+    <record id="jira_view_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id"
+               ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button" position="after">
+                <button name="update_jira" string="Export To Jira"
+                        type="object" class="oe_highlight" icon="fa-arrow-circle-down" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="show_jira_details"/>
+            </xpath>
+
+            <xpath expr="//group" position="after">
+                <notebook>
+                    <page name="jira_details" string="JIRA Details" attrs="{'invisible': [('show_jira_details', '=', False)]}">
+                        <group>
+                            <group string="Key &amp; Status">
+                                <field name="key" class="oe_inline" readonly="1"/>
+                                <field name="jira_status" class="oe_inline"/>
+                            </group>
+                            <group string="JIRA Details">
+                                <field name="jira_id" invisible="1"/>
+                                <field name="reporter_id" attrs="{'required': [('show_jira_details', '=', True)]}"/>
+                                <field name="priority_id"/>
+                            </group>
+                            <group string="JIRA Project Details">
+                                <field name="project_id" attrs="{'required': [('show_jira_details', '=', True)]}"/>
+                                <field name="issue_type"/>
+                                <field name="is_subtask" invisible="1"/>
+                                <field name="is_epic" invisible="1"/>
+                                <field name="parent_id"
+                                       attrs="{'invisible': [('is_subtask', '=', False)], 'required': [('is_subtask', '=', True)]}"
+                                       domain="[('project_id', '=', project_id)]"
+                                       options="{'no_create': 1, 'no_create_edit': 1}"/>
+
+                                <field name="parent_id" attrs="{'invisible': [('is_subtask', '=', False)], 'required': [('is_subtask', '=', True)]}"
+                                       domain="[('project_id', '=', project_id)]" options="{'no_create': 1, 'no_create_edit': 1}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <notebook>
+                                <page name="linked_issues" string="Link Issues">
+                                    <field name="link_ids" attrs="{'readonly': [('project_id', '=', False)]}"
+                                           context="{'default_task_id': active_id,'project_id': project_id}">
+                                        <tree editable="bottom">
+                                            <field name="jira_id" invisible="1"/>
+                                            <field name="link_name" options="{'no_create': 1, 'no_create_edit': 1, 'limit': 15}"
+                                                   domain="[('show', '=', True)]" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                                            <field name="linked_task_id" options="{'no_create': 1, 'no_create_edit': 1, 'limit': 15}"
+                                                   required="1" attrs="{'readonly': [('jira_id', '!=', False)]}"/>
+                                            <field name="task_id" invisible="1"/>
+                                            <field name="link_id" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

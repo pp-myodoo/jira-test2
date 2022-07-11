@@ -1,0 +1,33 @@
+<odoo>
+
+    <record id="issue_update_cron" model="ir.cron">
+        <field name="name">Jira Issues Update Cron (Export)</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.latest_jira_issue_update()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="update_project" model="ir.cron">
+        <field name="name">Jira Project Update Cron (Import)</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.latest_jira_project_update()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="update_issue_status" model="ir.cron">
+        <field name="name">Jira Update Issues Status Cron (Import)</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.update_issue_status()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="jira_view_company_form">
+        <field name="name">jira.view.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="after">
+                <page string="Jira Configuration">
+                    <separator name="configuration"
+                               string=" Jira Configuration"/>
+                    <div>
+                        <span>
+                            <button string='Test Connection' type="object"
+                                    name="test_connection" class="oe_highlight" icon="fa-cogs"/>
+                        </span>
+                    </div>
+                    <notebook>
+                        <!--//////////////////////////// CREDENTIALS PAGE //////////////////////////////// -->
+                        <page name="credentials" string="Credentials">
+                            <group string="Credentials">
+                                <group name="Credential">
+                                    <field name="url" required="1"/>
+                                    <field name="jira_login" required="1"/>
+                                    <field name="password" required="1" password="True"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!--///////////////////////// IMPORT PAGE ///////////////////////////// -->
+                        <page name="initial_sync" string='Import from Jira'>
+                            <separator name='sync' string='Initial Sync'/>
+                            <group>
+                                <group>
+                                    <button name="update_jira" string="Import User" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'res.users'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Project Category" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.project.category'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Project Template" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.project.template'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Project Type" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.project.type'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Project" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'project.project'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Issue Priority" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.issue.priority'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Issue Status Category" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.issue.status.category'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Issue Status Type" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.status'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_jira" string="Import Issue Link Type" type="object" class="oe_highlight"
+                                            icon="fa-arrow-circle-down" context="{'update': 'jira.issue.link.type'}"/>
+                                </group>
+                                <group>
+                                    <button name="update_issue_status" string="Import Status" type="object"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="resusers_custom_view" model="ir.ui.view">
+        <field name="name">res.users.form.custom</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="tz" position="after">
+                <field name="jira_accountId"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

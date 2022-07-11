@@ -1,0 +1,130 @@
+<odoo>
+
+    <!-- Very basic settings -->
+    <record id="jira_jira_status" model="ir.model.access">
+        <field name="name">jira_status</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_status"/>
+    </record>
+
+    <record id="jira_link_access" model="ir.model.access">
+        <field name="name">jira_link_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_link"/>
+    </record>
+
+    <record id="jira_issue_link_type_access" model="ir.model.access">
+        <field name="name">jira_issue_link_type_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_link_type"/>
+    </record>
+
+    <record id="jira_issue_link_single_access" model="ir.model.access">
+        <field name="name">jira_issue_link_single_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_link_single"/>
+    </record>
+
+    <record id="jira_issue_link_access" model="ir.model.access">
+        <field name="name">jira_issue_link_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_link"/>
+    </record>
+
+    <record id="jira_issue_status_category_access" model="ir.model.access">
+        <field name="name">jira_issue_status_category_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_status_category"/>
+    </record>
+
+    <record id="jira_project_template_access" model="ir.model.access">
+        <field name="name">jira_project_template_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_project_template"/>
+    </record>
+
+    <record id="jira_issue_priority_access" model="ir.model.access">
+        <field name="name">jira_issue_priority_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_priority"/>
+    </record>
+
+    <record id="jira_project_type_access" model="ir.model.access">
+        <field name="name">jira_project_type_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_project_type"/>
+    </record>
+
+    <record id="jira_project_version_access" model="ir.model.access">
+        <field name="name">jira_project_version_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_project_version"/>
+    </record>
+
+    <record id="jira_settings_access" model="ir.model.access">
+        <field name="name">jira_settings_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_res_company"/>
+    </record>
+
+    <record id="jira_project_category_access" model="ir.model.access">
+        <field name="name">jira_project_category_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_project_category"/>
+    </record>
+
+    <record id="jira_project_component_access" model="ir.model.access">
+        <field name="name">jira_project_component_access</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_project_component"/>
+    </record>
+
+    <record id="jira_issue_issue_type" model="ir.model.access">
+        <field name="name">jira_issue_type</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="model_id" ref="model_jira_issue_type"/>
+    </record>
+
+</odoo>
