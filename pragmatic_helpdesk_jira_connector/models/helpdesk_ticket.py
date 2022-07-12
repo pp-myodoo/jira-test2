@@ -213,7 +213,6 @@ class HelpdeskTicketInherit(models.Model):
 
                 if help_tict_id.project_id.jira_project and help_tict_id.jira_id:
                     issue_dict = help_tict_id.create_jira_dict('WRITE')
-                    _logger.info(f'ISSUE DICT: {issue_dict}')
                     if issue_dict['fields']:
                         response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
                                                                                    issue_dict)
@@ -243,6 +242,23 @@ class HelpdeskTicketInherit(models.Model):
                                 response = self.env['res.company'].search([], limit=1).post(
                                     'issue/' + help_tict_id.key + '/comment', data, )
                                 comment_id.jira_id = response.json()['id']
+
+                    if help_tict_id.tag_ids:
+                        tags_post_dict = dict()
+                        tags_list = []
+
+                        for tag in help_tict_id.tag_ids:
+                            tag_dict = dict()
+                            tag_dict['add'] = tag.name
+                            tags_list.append(tag_dict)
+
+                        tags_post_dict['update']['labels'] = tags_list
+
+                        _logger.info(f'TAGS LIST: {tags_list}')
+                        _logger.info(f'TAGS POST DICT: {tags_post_dict}')
+
+                        response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
+                                                                                   tags_post_dict)
 
         except Exception:
             raise Warning("You selected status, which is not available in jira..")
