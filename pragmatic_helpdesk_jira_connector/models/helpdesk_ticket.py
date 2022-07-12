@@ -98,8 +98,6 @@ class HelpdeskTicketInherit(models.Model):
             response = self.env['res.company'].search([], limit=1).post('issue/' + self.key + '/transitions',
                                                                         dict(transition=dict(id=allowed_transitions[
                                                                             int(stage_obj.jira_id)])))
-        _logger.info(f'JIRA DICT: {jira_dict}')
-
         return jira_dict
 
     def update_issue_status(self):
@@ -215,6 +213,7 @@ class HelpdeskTicketInherit(models.Model):
 
                 if help_tict_id.project_id.jira_project and help_tict_id.jira_id:
                     issue_dict = help_tict_id.create_jira_dict('WRITE')
+                    _logger.info(f'ISSUE DICT: {issue_dict}')
                     if issue_dict['fields']:
                         response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
                                                                                    issue_dict)
@@ -240,7 +239,6 @@ class HelpdeskTicketInherit(models.Model):
                         for comment_id in comment_ids:
                             if comment_id.body:
                                 data = {"body": comment_id.body[3:-4]}
-                                _logger.info(f'DATA BODY: {data}')
                             if (data and help_tict_id.key) and not comment_id.jira_id:
                                 response = self.env['res.company'].search([], limit=1).post(
                                     'issue/' + help_tict_id.key + '/comment', data, )
