@@ -84,6 +84,7 @@ class HelpdeskTicketInherit(models.Model):
                 id=self.env['jira.issue.priority'].browse(self.priority_id.id).jira_id)
         if self.parent_id:
             jira_dict['fields']['parent'] = dict(key=self.env['helpdesk.ticket'].browse(self.parent_id.id).key)
+
         if self.jira_status and type == 'WRITE':
             stage_obj = self.env['jira.status'].browse(self.jira_status.id)
             if not stage_obj.jira_id:
@@ -97,6 +98,8 @@ class HelpdeskTicketInherit(models.Model):
             response = self.env['res.company'].search([], limit=1).post('issue/' + self.key + '/transitions',
                                                                         dict(transition=dict(id=allowed_transitions[
                                                                             int(stage_obj.jira_id)])))
+        _logger.info(f'JIRA DICT: {jira_dict}')
+
         return jira_dict
 
     def update_issue_status(self):
