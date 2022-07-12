@@ -240,6 +240,7 @@ class HelpdeskTicketInherit(models.Model):
                         for comment_id in comment_ids:
                             if comment_id.body:
                                 data = {"body": comment_id.body[3:-4]}
+                                _logger.info(f'DATA BODY: {data}')
                             if (data and help_tict_id.key) and not comment_id.jira_id:
                                 response = self.env['res.company'].search([], limit=1).post(
                                     'issue/' + help_tict_id.key + '/comment', data, )
