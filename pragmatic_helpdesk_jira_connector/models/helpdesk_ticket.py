@@ -244,7 +244,7 @@ class HelpdeskTicketInherit(models.Model):
                                 comment_id.jira_id = response.json()['id']
 
                     if help_tict_id.tag_ids:
-                        tags_post_dict = dict()
+                        tags_post_dict = {'update': {'labels': ''}}
                         tags_list = []
 
                         for tag in help_tict_id.tag_ids:
@@ -257,8 +257,8 @@ class HelpdeskTicketInherit(models.Model):
                         _logger.info(f'TAGS LIST: {tags_list}')
                         _logger.info(f'TAGS POST DICT: {tags_post_dict}')
 
-                        # response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
-                        #                                                            tags_post_dict)
+                        response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
+                                                                                   tags_post_dict)
 
         except Exception as e:
             _logger.info(f'EXCEPTION: {e}')
