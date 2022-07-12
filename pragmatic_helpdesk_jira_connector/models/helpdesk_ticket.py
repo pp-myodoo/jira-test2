@@ -257,8 +257,8 @@ class HelpdeskTicketInherit(models.Model):
                         _logger.info(f'TAGS LIST: {tags_list}')
                         _logger.info(f'TAGS POST DICT: {tags_post_dict}')
 
-                        response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
-                                                                                   tags_post_dict)
+                        # response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
+                        #                                                            tags_post_dict)
 
         except Exception:
             raise Warning("You selected status, which is not available in jira..")
