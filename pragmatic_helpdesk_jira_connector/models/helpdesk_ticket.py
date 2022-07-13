@@ -190,7 +190,8 @@ class HelpdeskTicketInherit(models.Model):
                         ticket.jira_tag_ids = [(4, helpdesk_tag.id)]
 
                     # assign new sync list to ticket tags list
-                    ticket.tag_ids = ticket.jira_tag_ids
+                    for tag in ticket.jira_tag_ids:
+                        ticket.tag_ids = [(4, tag.id)]
 
             # ============================= ADDED PART =============================
 
