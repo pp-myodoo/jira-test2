@@ -46,7 +46,7 @@ class HelpdeskTicketInherit(models.Model):
     is_subtask = fields.Boolean(compute=compute_is_epic, store=True)
     is_epic = fields.Boolean(compute=compute_is_epic, store=True)
     show_jira_details = fields.Boolean('Use Ticket For Jira ')
-    jira_tag_ids = fields.Many2many('helpdesk.tag', string='Jira Tags')
+    jira_tag_ids = fields.Many2many('helpdesk.tag', 'helpdesk_jira_tag_helpdesk_ticket_rel', 'helpdesk.tag', 'helpdesk.ticket', string='Jira Tags')
 
     @api.onchange('project_id')
     def onchange_project_id(self):
