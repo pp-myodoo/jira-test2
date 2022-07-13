@@ -170,25 +170,25 @@ class HelpdeskTicketInherit(models.Model):
 
                 if ticket_id:
                     tags_ids_list = []
-                    for tag in ticket_id.tag_ids:
+                    for tag in ticket.tag_ids:
                         tags_ids_list.append(tag.name)
                     jira_tags_ids_list = []
-                    for tag in ticket_id.jira_tag_ids:
+                    for tag in ticket.jira_tag_ids:
                         jira_tags_ids_list.append(tag.name)
                     _logger.info(f'TAG IDS 1: {tags_ids_list}')
                     _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
 
                     # remove deleted tags from previous sync list
-                    for tag in ticket_id.jira_tag_ids:
+                    for tag in ticket.jira_tag_ids:
                         tag_removed = True
                         for label in labels_dict:
                             if tag.name == label:
                                 tag_removed = False
                         if tag_removed:
-                            ticket_id.jira_tag_ids = [(2, tag.id)]
+                            ticket.jira_tag_ids = [(2, tag.id)]
 
                     jira_tags_ids_list = []
-                    for tag in ticket_id.jira_tag_ids:
+                    for tag in ticket.jira_tag_ids:
                         jira_tags_ids_list.append(tag.name)
                     _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
 
@@ -199,18 +199,18 @@ class HelpdeskTicketInherit(models.Model):
                             helpdesk_tag = self.env['helpdesk.tag'].create({
                                 'name': label
                             })
-                        ticket_id.jira_tag_ids = [(4, helpdesk_tag.id)]
+                        ticket.jira_tag_ids = [(4, helpdesk_tag.id)]
 
                     jira_tags_ids_list = []
-                    for tag in ticket_id.jira_tag_ids:
+                    for tag in ticket.jira_tag_ids:
                         jira_tags_ids_list.append(tag.name)
                     _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
 
                     # assign new sync list to ticket tags list
-                    ticket_id.tag_ids = ticket_id.jira_tag_ids
+                    ticket.tag_ids = ticket.jira_tag_ids
 
                     tags_ids_list = []
-                    for tag in ticket_id.tag_ids:
+                    for tag in ticket.tag_ids:
                         tags_ids_list.append(tag.name)
                     _logger.info(f'TAG IDS 2: {tags_ids_list}')
 
