@@ -167,8 +167,15 @@ class HelpdeskTicketInherit(models.Model):
 
             if response['fields']['labels']:
                 labels_dict = response['fields']['labels']
-                _logger.info(f'TAG IDS 1: {self.tag_ids}')
-                _logger.info(f'JIRA TAG IDS 1: {self.jira_tag_ids}')
+
+                tags_ids_list = []
+                for tag in self.tag_ids:
+                    tags_ids_list.append(tag.name)
+                jira_tags_ids_list = []
+                for tag in self.jira_tag_ids:
+                    jira_tags_ids_list.append(tag.name)
+                _logger.info(f'TAG IDS 1: {tags_ids_list}')
+                _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
 
                 # remove deleted tags from previous sync list
                 for tag in self.jira_tag_ids:
@@ -179,7 +186,10 @@ class HelpdeskTicketInherit(models.Model):
                     if tag_removed:
                         self.jira_tag_ids = [(2, tag.id)]
 
-                _logger.info(f'JIRA TAG IDS 2: {self.jira_tag_ids}')
+                jira_tags_ids_list = []
+                for tag in self.jira_tag_ids:
+                    jira_tags_ids_list.append(tag.name)
+                _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
 
                 # add new tags to sync list
                 for label in labels_dict:
@@ -191,12 +201,18 @@ class HelpdeskTicketInherit(models.Model):
                             })
                         self.jira_tag_ids = [(4, helpdesk_tag.id)]
 
-                _logger.info(f'JIRA TAG IDS 3: {self.jira_tag_ids}')
+                jira_tags_ids_list = []
+                for tag in self.jira_tag_ids:
+                    jira_tags_ids_list.append(tag.name)
+                _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
 
                 # assign new sync list to ticket tags list
                 self.tag_ids = self.jira_tag_ids
 
-                _logger.info(f'TAG IDS 2: {self.tag_ids}')
+                tags_ids_list = []
+                for tag in self.tag_ids:
+                    tags_ids_list.append(tag.name)
+                _logger.info(f'TAG IDS 2: {tags_ids_list}')
 
                 # self._cr.execute(
                 #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
