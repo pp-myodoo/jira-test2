@@ -264,7 +264,7 @@ class HelpdeskTicketInherit(models.Model):
 
                         for jira_tag in help_tict_id.jira_tag_ids:
                             tag_dict = dict()
-                            tag_dict['remove'] = tag.name
+                            tag_dict['remove'] = jira_tag.name
                             tags_remove_list.append(tag_dict)
 
                         tags_remove_dict['update']['labels'] = tags_list
