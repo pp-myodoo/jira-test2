@@ -172,6 +172,15 @@ class HelpdeskTicketInherit(models.Model):
                 labels_dict = response['fields']['labels']
 
                 if ticket_id:
+                    tags_ids_list = []
+                    for tag in ticket.tag_ids:
+                        tags_ids_list.append(tag.name)
+                    jira_tags_ids_list = []
+                    for tag in ticket.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'TAG IDS 1: {tags_ids_list}')
+                    _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
+
                     # remove deleted tags from previous sync list
                     for tag in ticket.jira_tag_ids:
                         tag_removed = True
@@ -182,6 +191,11 @@ class HelpdeskTicketInherit(models.Model):
                             _logger.info(f"UNLINK: {tag.name}")
                             ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
+                    jira_tags_ids_list = []
+                    for tag in ticket.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
+
                     # add new tags to sync list
                     for label in labels_dict:
                         helpdesk_tag = self.env['helpdesk.tag'].search([('name', '=', label)])
@@ -191,9 +205,19 @@ class HelpdeskTicketInherit(models.Model):
                             })
                         ticket.jira_tag_ids = [(4, helpdesk_tag.id)]  # link
 
+                    jira_tags_ids_list = []
+                    for tag in ticket.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
+
                     # assign new sync list to ticket tags list
                     for tag in ticket.jira_tag_ids:
                         ticket.tag_ids = [(4, tag.id)]  # link
+
+                    tags_ids_list = []
+                    for tag in ticket.tag_ids:
+                        tags_ids_list.append(tag.name)
+                    _logger.info(f'TAG IDS 2: {tags_ids_list}')
 
             # ============================= ADDED PART =============================
 
