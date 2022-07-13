@@ -1,6 +1,6 @@
 {
     'name': '(myOdoo edit) Pragmatic Helpdesk Jira Connector',
-    'version': '14.0.2.0.0',
+    'version': '14.0.2.0.1',
     'author': 'Pragmatic TechSoft Pvt Ltd.',
     'website': 'http://www.pragtech.co.in',
     'summary': 'Pragmatic Jira Connector',

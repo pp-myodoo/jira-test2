@@ -47,8 +47,9 @@ class HelpdeskTicketInherit(models.Model):
     is_epic = fields.Boolean(compute=compute_is_epic, store=True)
     show_jira_details = fields.Boolean('Use Ticket For Jira ')
     # ============================= ADDED PART =============================
+    tag_ids = fields.Many2many('helpdesk.tag', string='Tags', required=True)  # added required param
     jira_tag_ids = fields.Many2many('helpdesk.tag', 'helpdesk_jira_tag_helpdesk_ticket_rel', 'jira_tag_id',
-                                    'ticket_id', string='Jira Tags')
+                                    'ticket_id', string='Jira Tags')  # added new relation
     # ============================= ADDED PART =============================
 
     @api.onchange('project_id')
@@ -178,7 +179,7 @@ class HelpdeskTicketInherit(models.Model):
                             if tag.name == label:
                                 tag_removed = False
                         if tag_removed:
-                            ticket.jira_tag_ids = [(2, tag.id)]
+                            ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
                     # add new tags to sync list
                     for label in labels_dict:
@@ -187,11 +188,11 @@ class HelpdeskTicketInherit(models.Model):
                             helpdesk_tag = self.env['helpdesk.tag'].create({
                                 'name': label
                             })
-                        ticket.jira_tag_ids = [(4, helpdesk_tag.id)]
+                        ticket.jira_tag_ids = [(4, helpdesk_tag.id)]  # link
 
                     # assign new sync list to ticket tags list
                     for tag in ticket.jira_tag_ids:
-                        ticket.tag_ids = [(4, tag.id)]
+                        ticket.tag_ids = [(4, tag.id)]  # link
 
             # ============================= ADDED PART =============================
 
