@@ -257,6 +257,25 @@ class HelpdeskTicketInherit(models.Model):
                     # ----------------------------- ADDED PART -----------------------------
                     # SENDING LABELS TO JIRA
                     if help_tict_id.tag_ids:
+
+                        # remove old tags from jira
+                        tags_remove_dict = {'update': {'labels': ''}}
+                        tags_remove_list = []
+
+                        for jira_tag in help_tict_id.jira_tag_ids:
+                            tag_dict = dict()
+                            tag_dict['remove'] = tag.name
+                            tags_remove_list.append(tag_dict)
+
+                        tags_remove_dict['update']['labels'] = tags_list
+
+                        _logger.info(f'TAGS LIST: {tags_list}')
+                        _logger.info(f'TAGS REMOVE DICT: {tags_remove_dict}')
+
+                        response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
+                                                                                   tags_remove_dict)
+
+                        # send current tags to jira
                         tags_post_dict = {'update': {'labels': ''}}
                         tags_list = []
 
