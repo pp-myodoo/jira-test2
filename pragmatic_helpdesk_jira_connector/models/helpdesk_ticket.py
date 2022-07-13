@@ -179,6 +179,7 @@ class HelpdeskTicketInherit(models.Model):
                             if tag.name == label:
                                 tag_removed = False
                         if tag_removed:
+                            _logger.info(f"UNLINK: {tag.name}")
                             ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
                     # add new tags to sync list
