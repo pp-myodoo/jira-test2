@@ -313,6 +313,7 @@ class HelpdeskTicketInherit(models.Model):
                             tag_dict = dict()
                             tag_dict['add'] = tag.name
                             tags_list.append(tag_dict)
+                            help_tict_id.jira_tag_ids = [(4, tag.id)]  # update sync list
 
                         tags_post_dict['update']['labels'] = tags_list
 
