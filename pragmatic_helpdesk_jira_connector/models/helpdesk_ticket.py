@@ -167,6 +167,8 @@ class HelpdeskTicketInherit(models.Model):
 
             if response['fields']['labels']:
                 labels_dict = response['fields']['labels']
+                _logger.info(f'TAG IDS 1: {self.tag_ids}')
+                _logger.info(f'JIRA TAG IDS 1: {self.jira_tag_ids}')
 
                 # remove deleted tags from previous sync list
                 for tag in self.jira_tag_ids:
@@ -176,6 +178,8 @@ class HelpdeskTicketInherit(models.Model):
                             tag_removed = False
                     if tag_removed:
                         self.jira_tag_ids = [(2, tag.id)]
+
+                _logger.info(f'JIRA TAG IDS 2: {self.jira_tag_ids}')
 
                 # add new tags to sync list
                 for label in labels_dict:
@@ -187,8 +191,12 @@ class HelpdeskTicketInherit(models.Model):
                             })
                         self.jira_tag_ids = [(4, helpdesk_tag.id)]
 
+                _logger.info(f'JIRA TAG IDS 3: {self.jira_tag_ids}')
+
                 # assign new sync list to ticket tags list
                 self.tag_ids = self.jira_tag_ids
+
+                _logger.info(f'TAG IDS 2: {self.tag_ids}')
 
                 # self._cr.execute(
                 #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
