@@ -189,7 +189,7 @@ class HelpdeskTicketInherit(models.Model):
                                 tag_removed = False
                         if tag_removed:
                             _logger.info(f"UNLINK: {tag.name}")
-                            ticket.tag_ids = [(3, tag.id)]
+                            ticket.tag_ids = [(3, tag.id)] # unlink
                             ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
                     jira_tags_ids_list = []
@@ -211,7 +211,7 @@ class HelpdeskTicketInherit(models.Model):
                         jira_tags_ids_list.append(tag.name)
                     _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
 
-                    # assign new sync list to ticket tags list
+                    # link new sync list to ticket tags list
                     for tag in ticket.jira_tag_ids:
                         ticket.tag_ids = [(4, tag.id)]  # link
 

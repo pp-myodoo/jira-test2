@@ -8,6 +8,7 @@
     Helpdesk Jira Connector
     =================================================
     * Added labels and comments sync for Jira tickets.
+    * Set tag_ids field as required.
     =================================================
     
     This connector will help user to import/export following objects in Jira.
