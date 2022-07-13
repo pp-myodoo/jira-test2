@@ -168,32 +168,32 @@ class HelpdeskTicketInherit(models.Model):
             if response['fields']['labels']:
                 labels_dict = response['fields']['labels']
 
-                tags_ids_list = []
-                for tag in ticket_id.tag_ids:
-                    tags_ids_list.append(tag.name)
-                jira_tags_ids_list = []
-                for tag in ticket_id.jira_tag_ids:
-                    jira_tags_ids_list.append(tag.name)
-                _logger.info(f'TAG IDS 1: {tags_ids_list}')
-                _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
+                if ticket_id:
+                    tags_ids_list = []
+                    for tag in ticket_id.tag_ids:
+                        tags_ids_list.append(tag.name)
+                    jira_tags_ids_list = []
+                    for tag in ticket_id.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'TAG IDS 1: {tags_ids_list}')
+                    _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
 
-                # remove deleted tags from previous sync list
-                for tag in ticket_id.jira_tag_ids:
-                    tag_removed = True
+                    # remove deleted tags from previous sync list
+                    for tag in ticket_id.jira_tag_ids:
+                        tag_removed = True
+                        for label in labels_dict:
+                            if tag.name == label:
+                                tag_removed = False
+                        if tag_removed:
+                            ticket_id.jira_tag_ids = [(2, tag.id)]
+
+                    jira_tags_ids_list = []
+                    for tag in ticket_id.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
+
+                    # add new tags to sync list
                     for label in labels_dict:
-                        if tag.name == label:
-                            tag_removed = False
-                    if tag_removed:
-                        ticket_id.jira_tag_ids = [(2, tag.id)]
-
-                jira_tags_ids_list = []
-                for tag in ticket_id.jira_tag_ids:
-                    jira_tags_ids_list.append(tag.name)
-                _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
-
-                # add new tags to sync list
-                for label in labels_dict:
-                    if ticket_id:
                         helpdesk_tag = self.env['helpdesk.tag'].search([('name', '=', label)])
                         if not helpdesk_tag:
                             helpdesk_tag = self.env['helpdesk.tag'].create({
@@ -201,26 +201,26 @@ class HelpdeskTicketInherit(models.Model):
                             })
                         ticket_id.jira_tag_ids = [(4, helpdesk_tag.id)]
 
-                jira_tags_ids_list = []
-                for tag in ticket_id.jira_tag_ids:
-                    jira_tags_ids_list.append(tag.name)
-                _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
+                    jira_tags_ids_list = []
+                    for tag in ticket_id.jira_tag_ids:
+                        jira_tags_ids_list.append(tag.name)
+                    _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
 
-                # assign new sync list to ticket tags list
-                ticket_id.tag_ids = ticket_id.jira_tag_ids
+                    # assign new sync list to ticket tags list
+                    ticket_id.tag_ids = ticket_id.jira_tag_ids
 
-                tags_ids_list = []
-                for tag in ticket_id.tag_ids:
-                    tags_ids_list.append(tag.name)
-                _logger.info(f'TAG IDS 2: {tags_ids_list}')
+                    tags_ids_list = []
+                    for tag in ticket_id.tag_ids:
+                        tags_ids_list.append(tag.name)
+                    _logger.info(f'TAG IDS 2: {tags_ids_list}')
 
-                # self._cr.execute(
-                #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
-                # ticket_tag_relation_query_result = self._cr.fetchall()
-                # if not ticket_tag_relation_query_result:
-                #     self._cr.execute(f'INSERT INTO helpdesk_tag_helpdesk_ticket_rel (helpdesk_ticket_id, helpdesk_tag_id) VALUES ({ticket_id}, {helpdesk_tag.id})')
+                    # self._cr.execute(
+                    #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
+                    # ticket_tag_relation_query_result = self._cr.fetchall()
+                    # if not ticket_tag_relation_query_result:
+                    #     self._cr.execute(f'INSERT INTO helpdesk_tag_helpdesk_ticket_rel (helpdesk_ticket_id, helpdesk_tag_id) VALUES ({ticket_id}, {helpdesk_tag.id})')
 
-                # TODO: deleting tags that have been removed in jira
+                    # TODO: deleting tags that have been removed in jira
 
             # ----------------------------- ADDED PART -----------------------------
 
