@@ -46,6 +46,7 @@ class HelpdeskTicketInherit(models.Model):
     is_subtask = fields.Boolean(compute=compute_is_epic, store=True)
     is_epic = fields.Boolean(compute=compute_is_epic, store=True)
     show_jira_details = fields.Boolean('Use Ticket For Jira ')
+    jira_tag_ids = fields.Many2many('helpdesk.tag', string='Jira Tags')
 
     @api.onchange('project_id')
     def onchange_project_id(self):
@@ -136,6 +137,7 @@ class HelpdeskTicketInherit(models.Model):
             #     issue_dict['parent_id'] = self.jira_key(response['fields']['parent']['key']).id
 
             # ----------------------------- ADDED PART -----------------------------
+            # GETTING COMMENTS AND LABELS FROM JIRA
             ticket = self.env['helpdesk.ticket'].search([('jira_id', '=', response['id'])])
             ticket_id = ticket.id
 
@@ -164,6 +166,17 @@ class HelpdeskTicketInherit(models.Model):
 
             if response['fields']['labels']:
                 labels_dict = response['fields']['labels']
+
+                # remove deleted tags from previous sync list
+                for tag in self.jira_tag_ids:
+                    tag_removed = True
+                    for label in labels_dict:
+                        if tag.name == label:
+                            tag_removed = False
+                    if tag_removed:
+                        self.jira_tag_ids = [(2, tag.id)]
+
+                # add new tags to sync list
                 for label in labels_dict:
                     if ticket_id:
                         helpdesk_tag = self.env['helpdesk.tag'].search([('name', '=', label)])
@@ -171,11 +184,16 @@ class HelpdeskTicketInherit(models.Model):
                             helpdesk_tag = self.env['helpdesk.tag'].create({
                                 'name': label
                             })
-                        self._cr.execute(
-                            f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
-                        ticket_tag_relation_query_result = self._cr.fetchall()
-                        if not ticket_tag_relation_query_result:
-                            self._cr.execute(f'INSERT INTO helpdesk_tag_helpdesk_ticket_rel (helpdesk_ticket_id, helpdesk_tag_id) VALUES ({ticket_id}, {helpdesk_tag.id})')
+                        self.jira_tag_ids = [(4, helpdesk_tag.id)]
+
+                # assign new sync list to ticket tags list
+                self.tag_ids = self.jira_tag_ids
+
+                        # self._cr.execute(
+                        #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
+                        # ticket_tag_relation_query_result = self._cr.fetchall()
+                        # if not ticket_tag_relation_query_result:
+                        #     self._cr.execute(f'INSERT INTO helpdesk_tag_helpdesk_ticket_rel (helpdesk_ticket_id, helpdesk_tag_id) VALUES ({ticket_id}, {helpdesk_tag.id})')
 
                 # TODO: deleting tags that have been removed in jira
 
@@ -243,6 +261,8 @@ class HelpdeskTicketInherit(models.Model):
                                     'issue/' + help_tict_id.key + '/comment', data, )
                                 comment_id.jira_id = response.json()['id']
 
+                    # ----------------------------- ADDED PART -----------------------------
+                    # SENDING LABELS TO JIRA
                     if help_tict_id.tag_ids:
                         tags_post_dict = {'update': {'labels': ''}}
                         tags_list = []
@@ -259,6 +279,7 @@ class HelpdeskTicketInherit(models.Model):
 
                         response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
                                                                                    tags_post_dict)
+                    # ----------------------------- ADDED PART -----------------------------
 
         except Exception as e:
             _logger.info(f'EXCEPTION: {e}')
