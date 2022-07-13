@@ -46,8 +46,10 @@ class HelpdeskTicketInherit(models.Model):
     is_subtask = fields.Boolean(compute=compute_is_epic, store=True)
     is_epic = fields.Boolean(compute=compute_is_epic, store=True)
     show_jira_details = fields.Boolean('Use Ticket For Jira ')
+    # ============================= ADDED PART =============================
     jira_tag_ids = fields.Many2many('helpdesk.tag', 'helpdesk_jira_tag_helpdesk_ticket_rel', 'jira_tag_id',
                                     'ticket_id', string='Jira Tags')
+    # ============================= ADDED PART =============================
 
     @api.onchange('project_id')
     def onchange_project_id(self):
@@ -137,7 +139,7 @@ class HelpdeskTicketInherit(models.Model):
             # if 'parent' in response['fields'] and response['fields']['parent']:
             #     issue_dict['parent_id'] = self.jira_key(response['fields']['parent']['key']).id
 
-            # ----------------------------- ADDED PART -----------------------------
+            # ============================= ADDED PART =============================
             # GETTING COMMENTS AND LABELS FROM JIRA
             ticket = self.env['helpdesk.ticket'].search([('jira_id', '=', response['id'])])
             ticket_id = ticket.id
@@ -190,7 +192,7 @@ class HelpdeskTicketInherit(models.Model):
                     # assign new sync list to ticket tags list
                     ticket.tag_ids = ticket.jira_tag_ids
 
-            # ----------------------------- ADDED PART -----------------------------
+            # ============================= ADDED PART =============================
 
             issue = self.search([('key', '=', issue_dict['key'])])
             if issue:
@@ -254,7 +256,7 @@ class HelpdeskTicketInherit(models.Model):
                                     'issue/' + help_tict_id.key + '/comment', data, )
                                 comment_id.jira_id = response.json()['id']
 
-                    # ----------------------------- ADDED PART -----------------------------
+                    # ============================= ADDED PART =============================
                     # SENDING LABELS TO JIRA
                     if help_tict_id.tag_ids:
 
@@ -291,7 +293,7 @@ class HelpdeskTicketInherit(models.Model):
 
                         response = self.env['res.company'].search([], limit=1).put('issue/' + help_tict_id.jira_id,
                                                                                    tags_post_dict)
-                    # ----------------------------- ADDED PART -----------------------------
+                    # ============================= ADDED PART =============================
 
         except Exception as e:
             _logger.info(f'EXCEPTION: {e}')
