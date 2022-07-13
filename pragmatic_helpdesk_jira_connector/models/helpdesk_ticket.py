@@ -181,7 +181,7 @@ class HelpdeskTicketInherit(models.Model):
                     _logger.info(f'TAG IDS 1: {tags_ids_list}')
                     _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
 
-                    # remove deleted tags from previous sync list
+                    # remove deleted tags from sync list and ticket tags list
                     for tag in ticket.jira_tag_ids:
                         tag_removed = True
                         for label in labels_dict:
@@ -189,6 +189,7 @@ class HelpdeskTicketInherit(models.Model):
                                 tag_removed = False
                         if tag_removed:
                             _logger.info(f"UNLINK: {tag.name}")
+                            ticket.tag_ids = [(3, tag.id)]
                             ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
                     jira_tags_ids_list = []
