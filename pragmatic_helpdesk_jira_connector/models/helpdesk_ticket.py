@@ -169,15 +169,6 @@ class HelpdeskTicketInherit(models.Model):
                 labels_dict = response['fields']['labels']
 
                 if ticket_id:
-                    tags_ids_list = []
-                    for tag in ticket.tag_ids:
-                        tags_ids_list.append(tag.name)
-                    jira_tags_ids_list = []
-                    for tag in ticket.jira_tag_ids:
-                        jira_tags_ids_list.append(tag.name)
-                    _logger.info(f'TAG IDS 1: {tags_ids_list}')
-                    _logger.info(f'JIRA TAG IDS 1: {jira_tags_ids_list}')
-
                     # remove deleted tags from previous sync list
                     for tag in ticket.jira_tag_ids:
                         tag_removed = True
@@ -186,11 +177,6 @@ class HelpdeskTicketInherit(models.Model):
                                 tag_removed = False
                         if tag_removed:
                             ticket.jira_tag_ids = [(2, tag.id)]
-
-                    jira_tags_ids_list = []
-                    for tag in ticket.jira_tag_ids:
-                        jira_tags_ids_list.append(tag.name)
-                    _logger.info(f'JIRA TAG IDS 2: {jira_tags_ids_list}')
 
                     # add new tags to sync list
                     for label in labels_dict:
@@ -201,26 +187,8 @@ class HelpdeskTicketInherit(models.Model):
                             })
                         ticket.jira_tag_ids = [(4, helpdesk_tag.id)]
 
-                    jira_tags_ids_list = []
-                    for tag in ticket.jira_tag_ids:
-                        jira_tags_ids_list.append(tag.name)
-                    _logger.info(f'JIRA TAG IDS 3: {jira_tags_ids_list}')
-
                     # assign new sync list to ticket tags list
                     ticket.tag_ids = ticket.jira_tag_ids
-
-                    tags_ids_list = []
-                    for tag in ticket.tag_ids:
-                        tags_ids_list.append(tag.name)
-                    _logger.info(f'TAG IDS 2: {tags_ids_list}')
-
-                    # self._cr.execute(
-                    #     f'SELECT * FROM helpdesk_tag_helpdesk_ticket_rel WHERE helpdesk_ticket_id = {ticket_id} AND helpdesk_tag_id = {helpdesk_tag.id}')
-                    # ticket_tag_relation_query_result = self._cr.fetchall()
-                    # if not ticket_tag_relation_query_result:
-                    #     self._cr.execute(f'INSERT INTO helpdesk_tag_helpdesk_ticket_rel (helpdesk_ticket_id, helpdesk_tag_id) VALUES ({ticket_id}, {helpdesk_tag.id})')
-
-                    # TODO: deleting tags that have been removed in jira
 
             # ----------------------------- ADDED PART -----------------------------
 
