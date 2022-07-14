@@ -258,6 +258,11 @@ class HelpdeskTicketInherit(models.Model):
                             if comment_id.body:
                                 data = {"body": comment_id.body[3:-4]}
                                 _logger.info(f"COMMENT DATA: {data}")
+                            if comment_id.author_id:
+                                user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
+                                if user.jira_accountId:
+                                    data['author'] = {"accountId": user.jira_accountId}
+                                _logger.info(f"COMMENT USER DATA: {data}")
                             if (data and help_tict_id.key) and not comment_id.jira_id:
                                 response = self.env['res.company'].search([], limit=1).post(
                                     'issue/' + help_tict_id.key + '/comment', data, )
@@ -266,15 +271,14 @@ class HelpdeskTicketInherit(models.Model):
                     # ============================= ADDED PART =============================
                     # SENDING COMMENT AUTHOR ID
 
-                            if comment_id.author_id:
-                                user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
-                                if user.jira_accountId:
-                                    user_data = {"author": {"accountId": user.jira_accountId}}
-                                    _logger.info(f"COMMENT USER DATA: {user_data}")
-                                if (user_data and help_tict_id.key) and not comment_id.jira_id:
-                                    _logger.info(f"RESPONSE")
-                                    response = self.env['res.company'].search([], limit=1).post(
-                                        'issue/' + help_tict_id.key + '/comment', user_data, )
+                            # if comment_id.author_id:
+                            #     user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
+                            #     if user.jira_accountId:
+                            #         user_data = {"author": {"accountId": user.jira_accountId}}
+                            #         _logger.info(f"COMMENT USER DATA: {user_data}")
+                            #     if (user_data and help_tict_id.key) and not comment_id.jira_id:
+                            #         response = self.env['res.company'].search([], limit=1).post(
+                            #             'issue/' + help_tict_id.key + '/comment', user_data, )
 
                     # SENDING LABELS TO JIRA
                     if help_tict_id.tag_ids:
