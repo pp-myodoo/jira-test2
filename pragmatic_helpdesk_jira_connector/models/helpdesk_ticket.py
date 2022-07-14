@@ -269,6 +269,7 @@ class HelpdeskTicketInherit(models.Model):
                             if comment_id.author_id:
                                 user = self.env['res.users'].search(['partner_id', '=', comment_id.author_id.id])
                                 if user.jira_accountId:
+                                    _logger.info(f"USER JIRA ACCOUNT ID: {user.jira_accountId}")
                                     user_data = {"author": {"accountId": str(user.jira_accountId)}}
                                     _logger.info(f"COMMENT USER DATA: {user_data}")
                                 if (user_data and help_tict_id.key) and not comment_id.jira_id:
