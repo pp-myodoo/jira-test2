@@ -262,6 +262,7 @@ class HelpdeskTicketInherit(models.Model):
                                 user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
                                 if user.jira_accountId:
                                     author_dict = {
+                                        "self": self.env['res.company'].search([], limit=1).url + "/rest/api/latest/user?" + user.jira_accountId,
                                         "accountId": user.jira_accountId,
                                         "displayName": user.name
                                     }
@@ -275,14 +276,14 @@ class HelpdeskTicketInherit(models.Model):
                     # ============================= ADDED PART =============================
                     # SENDING COMMENT AUTHOR ID
 
-                            # if comment_id.author_id:
-                            #     user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
-                            #     if user.jira_accountId:
-                            #         user_data = {"author": {"accountId": user.jira_accountId}}
-                            #         _logger.info(f"COMMENT USER DATA: {user_data}")
-                            #     if (user_data and help_tict_id.key) and not comment_id.jira_id:
-                            #         response = self.env['res.company'].search([], limit=1).post(
-                            #             'issue/' + help_tict_id.key + '/comment', user_data, )
+                    # if comment_id.author_id:
+                    #     user = self.env['res.users'].search([('partner_id', '=', comment_id.author_id.id)])
+                    #     if user.jira_accountId:
+                    #         user_data = {"author": {"accountId": user.jira_accountId}}
+                    #         _logger.info(f"COMMENT USER DATA: {user_data}")
+                    #     if (user_data and help_tict_id.key) and not comment_id.jira_id:
+                    #         response = self.env['res.company'].search([], limit=1).post(
+                    #             'issue/' + help_tict_id.key + '/comment', user_data, )
 
                     # SENDING LABELS TO JIRA
                     if help_tict_id.tag_ids:
