@@ -32,16 +32,16 @@
                         <group>
                             <group string="Key &amp; Status">
                                 <field name="key" class="oe_inline" readonly="1"/>
-                                <field name="jira_status" class="oe_inline"/>
+                                <field name="jira_status" class="oe_inline" attrs="{'required': [('show_jira_details', '=', True)]}"/>
                             </group>
                             <group string="JIRA Details">
                                 <field name="jira_id" invisible="1"/>
                                 <field name="reporter_id" attrs="{'required': [('show_jira_details', '=', True)]}"/>
-                                <field name="priority_id"/>
+                                <field name="priority_id" attrs="{'required': [('show_jira_details', '=', True)]}"/>
                             </group>
                             <group string="JIRA Project Details">
                                 <field name="project_id" attrs="{'required': [('show_jira_details', '=', True)]}"/>
-                                <field name="issue_type"/>
+                                <field name="issue_type" attrs="{'required': [('show_jira_details', '=', True)]}"/>
                                 <field name="is_subtask" invisible="1"/>
                                 <field name="is_epic" invisible="1"/>
                                 <field name="parent_id"
