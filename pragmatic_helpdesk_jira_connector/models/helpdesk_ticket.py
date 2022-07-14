@@ -267,9 +267,8 @@ class HelpdeskTicketInherit(models.Model):
                     # SENDING COMMENT AUTHOR ID
 
                             if comment_id.author_id:
-                                user = self.env['res.users'].search(['partner_id', '=', comment_id.author_id])
                                 _logger.info(f"COMMENT ID: {comment_id.author_id}")
-                                _logger.info(f"USER: {user}")
+                                user = self.env['res.users'].search(['partner_id', '=', comment_id.author_id])
                                 # if user.jira_accountId:
                                 #     _logger.info(f"USER JIRA ACCOUNT ID: {user.jira_accountId}")
                                 #     user_data = {"author": {"accountId": str(user.jira_accountId)}}
