@@ -264,7 +264,8 @@ class HelpdeskTicketInherit(models.Model):
                                     author_dict = {
                                         "self": self.env['res.company'].search([], limit=1).url + "/rest/api/latest/user?" + user.jira_accountId,
                                         "accountId": user.jira_accountId,
-                                        "displayName": user.name
+                                        "displayName": user.name,
+                                        "active": False
                                     }
                                     data["author"] = author_dict
                                 _logger.info(f"COMMENT USER DATA: {data}")
