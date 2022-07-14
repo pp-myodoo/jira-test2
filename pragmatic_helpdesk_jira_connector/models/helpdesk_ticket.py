@@ -50,6 +50,7 @@ class HelpdeskTicketInherit(models.Model):
     tag_ids = fields.Many2many('helpdesk.tag', string='Tags', required=True)  # added required param
     jira_tag_ids = fields.Many2many('helpdesk.tag', 'helpdesk_jira_tag_helpdesk_ticket_rel', 'jira_tag_id',
                                     'ticket_id', string='Jira Tags')  # added new relation
+
     # ============================= ADDED PART =============================
 
     @api.onchange('project_id')
@@ -189,7 +190,7 @@ class HelpdeskTicketInherit(models.Model):
                                 tag_removed = False
                         if tag_removed:
                             _logger.info(f"UNLINK: {tag.name}")
-                            ticket.tag_ids = [(3, tag.id)] # unlink
+                            ticket.tag_ids = [(3, tag.id)]  # unlink
                             ticket.jira_tag_ids = [(3, tag.id)]  # unlink
 
                     jira_tags_ids_list = []
@@ -279,6 +280,7 @@ class HelpdeskTicketInherit(models.Model):
                         for comment_id in comment_ids:
                             if comment_id.body:
                                 data = {"body": comment_id.body[3:-4]}
+                                _logger.info(f"COMMENT DATA: {data}")
                             if (data and help_tict_id.key) and not comment_id.jira_id:
                                 response = self.env['res.company'].search([], limit=1).post(
                                     'issue/' + help_tict_id.key + '/comment', data, )
