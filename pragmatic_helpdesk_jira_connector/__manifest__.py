@@ -1,6 +1,6 @@
 {
     'name': '(myOdoo edit) Pragmatic Helpdesk Jira Connector',
-    'version': '14.0.2.0.2',
+    'version': '14.0.2.0.3',
     'author': 'Pragmatic TechSoft Pvt Ltd.',
     'website': 'http://www.pragtech.co.in',
     'summary': 'Pragmatic Jira Connector',
@@ -9,6 +9,7 @@
     =================================================
     * Added labels and comments sync for Jira tickets.
     * Set mandatory fields as required.
+    * Set cron jobs to execute every 5 minutes by default.
     =================================================
     
     This connector will help user to import/export following objects in Jira.
