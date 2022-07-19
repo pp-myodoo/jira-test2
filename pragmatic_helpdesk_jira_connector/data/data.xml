@@ -8,7 +8,7 @@
         <field name="interval_number">5</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
-        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0) - timedelta(hours=2)"/>
+        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0)"/>
         <field name="active" eval="True"/>
     </record>
 
@@ -20,7 +20,7 @@
         <field name="interval_number">5</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
-        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0) - timedelta(hours=2)"/>
+        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0)"/>
         <field name="active" eval="True"/>
     </record>
 
@@ -32,7 +32,7 @@
         <field name="interval_number">5</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
-        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0) - timedelta(hours=2)"/>
+        <field name="nextcall" eval="(datetime.now() + relativedelta(hours=1)).replace(minute=0, second=0, microsecond=0)"/>
         <field name="active" eval="True"/>
     </record>
 
